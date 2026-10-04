@@ -1275,6 +1275,7 @@ const t = (k, v) => {
   return s;
 };
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const img = name => `assets/${name}.jpg`;
 const icon = (id, cls = 'icon') => `<svg class="${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 const loc = () => (lang === 'de' ? 'de-DE' : 'en-GB');
 const now = new Date();
@@ -1506,8 +1507,8 @@ const ROOM_INFO = {
 function roomDetails(type) {
   const info = ROOM_INFO[type];
   const key = type === 'EZ' ? 'ez' : 'dz';
-  const html = `<div class="gallery-main"><img id="gal-img" src="assets/${info.imgs[0][0]}.jpg" alt="${esc(t(info.imgs[0][1]))}"></div>
-    <div class="thumbs">${info.imgs.map((im, i) => `<button type="button" data-gal="${im[0]}" data-alt="${esc(t(im[1]))}" aria-pressed="${i === 0}"><img src="assets/${im[0]}.jpg" alt=""></button>`).join('')}</div>
+  const html = `<div class="gallery-main"><img id="gal-img" src="${img(info.imgs[0][0])}" alt="${esc(t(info.imgs[0][1]))}"></div>
+    <div class="thumbs">${info.imgs.map((im, i) => `<button type="button" data-gal="${im[0]}" data-alt="${esc(t(im[1]))}" aria-pressed="${i === 0}"><img src="${img(im[0])}" alt=""></button>`).join('')}</div>
     <div class="modal-body">
       <span class="room-count" style="color:var(--brass-deep)">${t(`room.${key}.count`)}</span>
       <h3>${t(`room.${key}.name`)}</h3>
@@ -1524,7 +1525,7 @@ function roomDetails(type) {
 $('#modal').addEventListener('click', e => {
   const g = e.target.closest('[data-gal]');
   if (g) {
-    $('#gal-img').src = `assets/${g.dataset.gal}.jpg`;
+    $('#gal-img').src = img(g.dataset.gal);
     $('#gal-img').alt = g.dataset.alt;
     $$('.thumbs button').forEach(b => b.setAttribute('aria-pressed', String(b === g)));
   }
@@ -1700,7 +1701,7 @@ function stepRooms() {
     }
     const maxQ = type === 'DZ' ? freeRooms('DZ', BK.from, BK.to).length : free;
     return `<div class="panel rt">
-      <div class="rt-img"><img src="assets/${type === 'EZ' ? 'zimmer-einzel' : 'zimmer-doppel'}.jpg" alt="${esc(t(type === 'EZ' ? 'img.ez' : 'img.dz'))}"></div>
+      <div class="rt-img"><img src="${img(type === 'EZ' ? 'zimmer-einzel' : 'zimmer-doppel')}" alt="${esc(t(type === 'EZ' ? 'img.ez' : 'img.dz'))}"></div>
       <div class="rt-body">
         <div class="rt-head"><b>${t(`room.${key}.name`)}</b>${tag}</div>
         <div class="rt-meta">${t(type === 'EZ' ? 'room.persons1' : 'room.persons2')} · ${t('room.bath')} · ${t('room.wifi')} · ${t('room.tv')}</div>
