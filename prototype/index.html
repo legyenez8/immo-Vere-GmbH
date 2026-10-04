@@ -542,6 +542,7 @@ button.sb-field:hover { background: rgba(196,164,106,.08); }
 .done-head { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; }
 .done-mark { width: 64px; height: 64px; border-radius: 50%; border: 1px solid var(--brass-deep); display: grid; place-items: center; color: var(--brass-deep); flex: none; }
 .done-mark .icon { width: 30px; height: 30px; stroke-width: 1.5; }
+.done-mark.cxl { border-color: var(--danger); color: var(--danger); }
 .done h2 { font: 500 clamp(2.3rem, 5vw, 3.6rem)/1.02 var(--f-display); margin: 18px 0 0; outline: none; }
 .done h2 em { color: var(--brass-deep); font-style: italic; font-weight: 500; }
 .ticket { margin-top: 28px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -1279,6 +1280,9 @@ de: {
   'bk.err.rooms0': 'Bitte wählen Sie mindestens ein Zimmer.',
   'bk.err.cap': 'Es fehlen noch Betten für {m}. Bitte fügen Sie ein Zimmer hinzu oder verringern Sie die Gästezahl.',
   'bk.err.toomany': 'Sie haben mehr Zimmer als Gäste gewählt. Bitte entfernen Sie ein Zimmer oder erhöhen Sie die Gästezahl.',
+  'bk.err.avail': 'Für Ihre Daten sind nicht mehr genug Zimmer dieser Art frei. Bitte passen Sie Ihre Auswahl an.',
+  'bk.err.alloc': 'Die Gäste lassen sich nicht auf die gewählten Zimmer verteilen. Bitte prüfen Sie Gästezahl und Zimmer.',
+  'bk.err.dates': 'Bitte wählen Sie eine Anreise ab heute und eine Abreise danach, höchstens {n} Nächte.',
   'bk.r.clamped': 'Für Ihre neuen Daten sind weniger Zimmer frei. Wir haben Ihre Auswahl angepasst, bitte prüfen Sie sie.',
   'bk.t.h': 'Welcher Tarif passt zu Ihnen?', 'bk.t.hint': 'Beide Tarife gelten für dieselben Zimmer. Sie unterscheiden sich nur bei der Stornierung.',
   'bk.t.cond': 'Beispielkonditionen',
@@ -1299,6 +1303,7 @@ de: {
   'bk.p.cancel': 'Zahlung abgebrochen. Es wurde nichts gebucht und nichts belastet. Sie können es erneut versuchen oder eine andere Zahlungsart wählen.',
   'bk.p.decline': 'Zahlung abgelehnt (Simulation). Es wurde nichts gebucht. Bitte versuchen Sie es erneut oder wählen Sie eine andere Zahlungsart.',
   'bk.p.gone': 'Ein Zimmer wurde in der Zwischenzeit vergeben. Es wurde nichts gebucht. Bitte wählen Sie Ihre Zimmer erneut.',
+  'bk.p.invalid': 'Es wurde nichts gebucht. Bitte prüfen Sie die markierten Angaben.',
   'sim.label': 'Zahlungsfenster (Simulation)', 'sim.t.paypal': 'PayPal', 'sim.t.card': 'Kartenzahlung über Stripe', 'sim.t.apple': 'Apple Pay', 'sim.t.google': 'Google Pay', 'sim.badge': 'Simulation',
   'sim.to': 'Empfänger', 'sim.amount': 'Betrag', 'sim.ref': 'Verwendungszweck',
   'sim.text': 'Hier würde sich das Fenster von {m} öffnen. In der Demo wird nichts übertragen und nichts belastet.',
@@ -1306,7 +1311,12 @@ de: {
   'proc.h': 'Ihre Buchung wird abgeschlossen', 'proc.1': 'Zahlung wird bestätigt (Simulation)', 'proc.2': 'Zimmer werden reserviert', 'proc.3': 'Buchungsbestätigung wird erstellt',
   'done.pill': 'Demo-Buchung · Zahlung simuliert', 'done.h': 'Gebucht. <em>Schlafen Sie gut, {name}.</em>',
   'done.no': 'Buchungsnummer', 'done.stay': 'Aufenthalt', 'done.guests': 'Gäste', 'done.total': 'Bezahlt', 'done.paidwith': 'mit {m}, simuliert',
-  'done.docs': 'Ihre Unterlagen', 'done.conf': 'Buchungsbestätigung ansehen', 'done.inv': 'Rechnung ansehen (Muster)',
+  'done.docs': 'Ihre Unterlagen',
+  'done.cxl.pill': 'Demo-Buchung · storniert', 'done.cxl.h': 'Storniert. <em>Diese Buchung ist aufgehoben.</em>',
+  'done.refund': 'Erstattung', 'done.of': 'Buchungsbetrag {t}', 'done.amount': 'Betrag',
+  'done.cxl.t.refunded': 'Die Buchung wurde storniert. {t} werden erstattet (Simulation, es fließt kein Geld).',
+  'done.cxl.t.kept': 'Die Buchung wurde storniert. Laut Tarifbedingungen wird nichts erstattet (Simulation).',
+  'done.cxl.t.open': 'Die Buchung wurde storniert. Es war noch keine Zahlung eingegangen, daher wird nichts erstattet.', 'done.conf': 'Buchungsbestätigung ansehen', 'done.inv': 'Rechnung ansehen (Muster)',
   'done.demo.h': 'Für die Präsentation',
   'done.demo.t': 'Es wurde keine E-Mail versendet und nichts belastet. Im Livebetrieb gehen Bestätigung und Rechnung automatisch an {email}.',
   'done.demo.b': 'Diese Buchung in der Verwaltung öffnen', 'done.new': 'Neue Buchung', 'done.site': 'Zurück zur Website',
@@ -1449,6 +1459,9 @@ en: {
   'bk.err.rooms0': 'Please choose at least one room.',
   'bk.err.cap': 'Beds are still missing for {m}. Please add a room or reduce the number of guests.',
   'bk.err.toomany': 'You have chosen more rooms than guests. Please remove a room or add guests.',
+  'bk.err.avail': 'Not enough rooms of this type are free for your dates any more. Please adjust your selection.',
+  'bk.err.alloc': 'The guests cannot be split across the chosen rooms. Please check the number of guests and rooms.',
+  'bk.err.dates': 'Please choose a check-in from today and a check-out after it, at most {n} nights.',
   'bk.r.clamped': 'Fewer rooms are available for your new dates. We have adjusted your selection, please check it.',
   'bk.t.h': 'Which rate suits you?', 'bk.t.hint': 'Both rates cover the same rooms. They only differ in cancellation.',
   'bk.t.cond': 'Sample conditions',
@@ -1469,6 +1482,7 @@ en: {
   'bk.p.cancel': 'Payment cancelled. Nothing was booked or charged. You can try again or choose another payment method.',
   'bk.p.decline': 'Payment declined (simulation). Nothing was booked. Please try again or choose another payment method.',
   'bk.p.gone': 'A room was taken in the meantime. Nothing was booked. Please choose your rooms again.',
+  'bk.p.invalid': 'Nothing was booked. Please check the highlighted details.',
   'sim.label': 'Payment window (simulation)', 'sim.t.paypal': 'PayPal', 'sim.t.card': 'Card payment via Stripe', 'sim.t.apple': 'Apple Pay', 'sim.t.google': 'Google Pay', 'sim.badge': 'Simulation',
   'sim.to': 'Payee', 'sim.amount': 'Amount', 'sim.ref': 'Reference',
   'sim.text': 'This is where the {m} window would open. In the demo nothing is transmitted and nothing is charged.',
@@ -1476,7 +1490,12 @@ en: {
   'proc.h': 'Completing your booking', 'proc.1': 'Confirming payment (simulation)', 'proc.2': 'Reserving rooms', 'proc.3': 'Creating booking confirmation',
   'done.pill': 'Demo booking · payment simulated', 'done.h': 'Booked. <em>Sleep well, {name}.</em>',
   'done.no': 'Booking number', 'done.stay': 'Stay', 'done.guests': 'Guests', 'done.total': 'Paid', 'done.paidwith': 'with {m}, simulated',
-  'done.docs': 'Your documents', 'done.conf': 'View booking confirmation', 'done.inv': 'View invoice (sample)',
+  'done.docs': 'Your documents',
+  'done.cxl.pill': 'Demo booking · cancelled', 'done.cxl.h': 'Cancelled. <em>This booking is no longer valid.</em>',
+  'done.refund': 'Refund', 'done.of': 'booking amount {t}', 'done.amount': 'Amount',
+  'done.cxl.t.refunded': 'The booking was cancelled. {t} will be refunded (simulation, no money moves).',
+  'done.cxl.t.kept': 'The booking was cancelled. Under the rate conditions nothing is refunded (simulation).',
+  'done.cxl.t.open': 'The booking was cancelled. No payment had been received, so nothing is refunded.', 'done.conf': 'View booking confirmation', 'done.inv': 'View invoice (sample)',
   'done.demo.h': 'For the presentation',
   'done.demo.t': 'No email was sent and nothing was charged. In live operation the guest automatically receives the confirmation and invoice at {email}.',
   'done.demo.b': 'Open this booking in the back office', 'done.new': 'New booking', 'done.site': 'Back to the website',
@@ -2006,7 +2025,8 @@ function openBooking(step = 1, opts = {}) {
   UI.calFocus = BK.editing === 'to' ? BK.to : BK.from;
   $('#bk').hidden = false;
   syncInert();
-  renderBooking({ focus: 'heading' });
+  const fail = BK.step !== 6 && firstInvalid(BK.step);
+  if (fail) showInvalid(fail); else renderBooking({ focus: 'heading' });
   $('#bk-scroll').scrollTop = 0;
   setDemoNav();
 }
@@ -2022,12 +2042,18 @@ function closeBooking() {
 }
 function validate(step) {
   const errors = {};
-  if (step === 1 && !(BK.to > BK.from)) errors.dates = t('bk.d.mode.to');
+  if (step === 1 && !(BK.from >= 0 && BK.to > BK.from && BK.to - BK.from <= MAX_NIGHTS)) errors.dates = t('bk.err.dates', { n: MAX_NIGHTS });
   if (step === 2) {
     const n = roomCount(), cap = capacity();
     if (!n) errors.rooms = t('bk.err.rooms0');
+    else if (KINDS.some(k => BK.qty[k] > freeRooms(k, BK.from, BK.to).length)) errors.rooms = t('bk.err.avail');
     else if (cap < BK.guests) errors.rooms = t('bk.err.cap', { m: guestsL(BK.guests - cap) });
     else if (n > BK.guests) errors.rooms = t('bk.err.toomany');
+    else {
+      const { rooms, unplaced } = draftRooms();
+      const placed = rooms.reduce((a, r) => a + r.guests, 0);
+      if (unplaced || placed !== BK.guests || rooms.some(r => r.guests < 1 || r.guests > capOf(r.kind))) errors.rooms = t('bk.err.alloc');
+    }
   }
   if (step === 4) {
     const f = BK.form;
@@ -2038,17 +2064,25 @@ function validate(step) {
   }
   return errors;
 }
+/* First step before `upTo` whose data is no longer valid (dates, rooms/availability/guest split, guest details). */
+function firstInvalid(upTo) {
+  for (let s = 1; s < Math.min(upTo, 5); s++) {
+    const errors = validate(s);
+    if (Object.keys(errors).length) return { step: s, errors };
+  }
+  return null;
+}
+function showInvalid(fail) {
+  if (fail.step === 2) { clampQty(); fail.errors = validate(2); }
+  BK.step = fail.step;
+  BK.errors = Object.keys(fail.errors).length ? fail.errors : { rooms: t('bk.err.avail') };
+  BK.notice = null;
+  renderBooking({ focus: 'error' });
+}
 function goStep(n) {
   if (n > BK.step) {
-    for (let s = BK.step; s < n; s++) {
-      const errors = validate(s);
-      if (Object.keys(errors).length) {
-        BK.step = s;
-        BK.errors = errors;
-        renderBooking({ focus: 'error' });
-        return;
-      }
-    }
+    const fail = firstInvalid(n);
+    if (fail) { showInvalid(fail); return; }
   }
   BK.errors = {};
   BK.notice = null;
@@ -2147,7 +2181,8 @@ function calMonth(m) {
     const off = offOf(y, mo, d);
     const toMode = BK.editing === 'to';
     const disabled = off < 0 || (toMode && (off <= BK.from || off - BK.from > MAX_NIGHTS));
-    const full = off >= 0 && freeType('EZ', off, off + 1) + freeType('DZ', off, off + 1) === 0;
+    const freeEZ = off >= 0 ? freeType('EZ', off, off + 1) : 0, freeDZ = off >= 0 ? freeType('DZ', off, off + 1) : 0;
+    const full = off >= 0 && freeEZ + freeDZ === 0;
     const demand = S.demand.includes(off);
     const cls = ['day'];
     if (demand) cls.push('is-demand');
@@ -2156,7 +2191,8 @@ function calMonth(m) {
     if (off === BK.to) cls.push('is-end');
     if (off > BK.from && off < BK.to) cls.push('in-range');
     if (full) cls.push('is-full');
-    const price = nightPrice('EZ', off);
+    const offers = [freeEZ && nightPrice('EZ', off), freeDZ && nightPrice('DZ', off)].filter(Boolean);
+    const price = offers.length ? Math.min(...offers) : nightPrice('EZ', off);
     const parts = [new Intl.DateTimeFormat(loc(), FMT.long).format(dayDate(off))];
     if (off === BK.from) parts.push(t('bk.day.from'));
     if (off === BK.to) parts.push(t('bk.day.to'));
@@ -2299,14 +2335,22 @@ function processingView() {
 function doneView() {
   const b = byRef(BK.doneRef);
   if (!b) return '';
+  const cxl = b.status === 'cxl';
+  const money = cxl
+    ? `<div><small>${t('done.refund')}</small><b>${eur2(b.refund || 0)}</b><span class="sub">${t('ps.' + b.payStatus)} · ${t('done.of', { t: eur2(b.total) })}</span></div>`
+    : b.payStatus === 'open'
+      ? `<div><small>${t('done.amount')}</small><b>${eur2(b.total)}</b><span class="sub">${t('pay.onsite')}</span></div>`
+      : `<div><small>${t('done.total')}</small><b>${eur2(b.total)}</b><span class="sub">${t('done.paidwith', { m: t('pay.' + b.pay) })}</span></div>`;
+  const cxlText = cxl ? `<p class="notice err" role="status">${icon('alert')}<span>${t('done.cxl.t.' + (b.payStatus === 'open' ? 'open' : (b.refund || 0) > 0 ? 'refunded' : 'kept'), { t: eur2(b.refund || 0) })}</span></p>` : '';
   return `<div class="done">
-    <div class="done-head"><div class="done-mark">${icon('check')}</div><span class="demo-pill">${t('done.pill')}</span></div>
-    <h2 id="bk-heading" tabindex="-1">${t('done.h', { name: esc(b.guest.first) })}</h2>
+    <div class="done-head"><div class="done-mark${cxl ? ' cxl' : ''}">${icon(cxl ? 'close' : 'check')}</div><span class="demo-pill">${t(cxl ? 'done.cxl.pill' : 'done.pill')}</span></div>
+    <h2 id="bk-heading" tabindex="-1">${cxl ? t('done.cxl.h') : t('done.h', { name: esc(b.guest.first) })}</h2>
+    ${cxlText}
     <div class="panel ticket">
       <div><small>${t('done.no')}</small><b>${b.ref}</b></div>
       <div><small>${t('done.stay')}</small><b>${fmt(b.from, 'dm')} – ${fmt(b.to, 'dm')}</b><span class="sub">${nightsL(b.to - b.from)}</span></div>
       <div><small>${t('done.guests')}</small><b>${guestsL(b.guests)}</b><span class="sub">${roomsL(b.rooms.length)}</span></div>
-      <div><small>${t('done.total')}</small><b>${eur2(b.total)}</b><span class="sub">${t('done.paidwith', { m: t('pay.' + b.pay) })}</span></div>
+      ${money}
     </div>
     <div class="panel done-rooms"><ul>${b.rooms.map(r => `<li><span>${t('kind.' + r.kind)} · ${guestsL(r.guests)}</span><span>${eur2(r.total)}</span></li>`).join('')}</ul></div>
     <div class="done-docs"><button class="btn btn-line" type="button" data-act="doc-conf" data-ref="${b.ref}">${icon('doc')}${t('done.conf')}</button><button class="btn btn-line" type="button" data-act="doc-inv" data-ref="${b.ref}">${icon('receipt')}${t('done.inv')}</button></div>
@@ -2319,7 +2363,9 @@ function doneView() {
 /* Zahlung (Simulation) */
 let simEntry = null;
 function startPay() {
-  if (BK.paying || simEntry) return;
+  if (BK.paying || simEntry || BK.processing) return;
+  const fail = firstInvalid(5);
+  if (fail) { showInvalid(fail); return; }
   const q = quote();
   const m = t('pay.' + BK.pay);
   BK.notice = null;
@@ -2349,15 +2395,29 @@ function simResult(kind) {
   BK.notice = kind;
   renderBooking({ focus: 'notice' });
 }
+/* Each payment run gets an id; resetDemo() bumps it so timers of an older run end without effect. */
+let payRun = 0, payTimer = 0;
+function cancelProcessing() {
+  payRun += 1;
+  clearTimeout(payTimer);
+}
 function runProcessing() {
+  const run = ++payRun;
   BK.processing = 1;
   renderBooking({ focus: 'heading' });
   const tick = () => {
-    if (BK.processing < 3) { BK.processing += 1; renderBooking(); setTimeout(tick, 520); return; }
+    if (run !== payRun) return;
+    if (BK.processing < 3) { BK.processing += 1; renderBooking(); payTimer = setTimeout(tick, 520); return; }
     const b = createBooking();
     BK.processing = 0;
     BK.paying = false;
-    if (!b) { clampQty(); BK.step = 2; BK.clamped = true; renderBooking({ focus: 'heading' }); toast(t('bk.p.gone')); return; }
+    if (!b) {
+      const fail = firstInvalid(5);
+      if (fail) showInvalid(fail);
+      else { clampQty(); BK.step = 2; BK.clamped = true; renderBooking({ focus: 'heading' }); }
+      toast(t(fail && fail.step !== 2 ? 'bk.p.invalid' : 'bk.p.gone'));
+      return;
+    }
     BK.doneRef = b.ref;
     BK.step = 6;
     S.pres.s1 = S.pres.s2 = S.pres.s3 = true;
@@ -2367,10 +2427,12 @@ function runProcessing() {
     renderSite();
     renderPresenter();
   };
-  setTimeout(tick, 520);
+  payTimer = setTimeout(tick, 520);
 }
 function createBooking() {
+  if (firstInvalid(5)) return null;
   const q = quote();
+  if (!q.rooms.length || q.unplaced || q.rooms.reduce((a, r) => a + r.guests, 0) !== BK.guests) return null;
   const used = [];
   for (const r of q.rooms) {
     const free = freeRooms(r.kind, BK.from, BK.to).filter(i => !used.includes(i));
@@ -2817,9 +2879,10 @@ let drawerEntry = null;
 function refundInfo(b) {
   if (b.payStatus === 'open') return { amount: 0, reason: t('act.cancel.r.open') };
   if (b.rate === 'saver') return { amount: 0, reason: t('act.cancel.r.saver') };
-  const hh = Number(String(b.times.in || '14:00').split(':')[0]);
-  const now = new Date();
-  const hours = b.from * 24 + hh - (now.getHours() + now.getMinutes() / 60);
+  const [hh, mm] = String(b.times.in || '14:00').split(':').map(Number);
+  const arrival = dayDate(b.from);
+  arrival.setHours(hh || 0, mm || 0, 0, 0);
+  const hours = (arrival.getTime() - Date.now()) / 3600e3;
   return hours >= b.cond.freeH ? { amount: b.total, reason: t('act.cancel.r.flex', { h: b.cond.freeH }) } : { amount: 0, reason: t('act.cancel.r.late', { h: b.cond.freeH }) };
 }
 function drawerHtml(b, confirm) {
@@ -3068,6 +3131,7 @@ function askReset() {
   });
 }
 function resetDemo() {
+  cancelProcessing();
   while (layers.length) closeLayer(layers[layers.length - 1], false);
   store.del(LS_STATE);
   defaults();
