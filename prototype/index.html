@@ -105,7 +105,7 @@ h2.display { font-size: clamp(2.3rem, 4.4vw, 3.8rem); }
 .demobar nav button::after, .lang button::after { content: ""; position: absolute; inset: -4px 0; }
 .demobar nav button[aria-pressed="true"], .demobar nav button[aria-expanded="true"] { background: rgba(196,164,106,.16); border-color: rgba(196,164,106,.45); color: var(--brass-soft); }
 .demobar nav .icon { width: 15px; height: 15px; }
-.presenter { position: fixed; z-index: 150; top: calc(var(--demo-h) + 8px); right: 12px; width: min(420px, calc(100vw - 24px)); max-height: calc(100vh - var(--demo-h) - 20px); overflow-y: auto; background: #0D1626; color: var(--on-dark); border: 1px solid rgba(196,164,106,.35); box-shadow: 0 24px 60px rgba(0,0,0,.45); padding: 20px; animation: pop var(--fast) var(--ease) both; }
+.presenter { position: fixed; z-index: 150; top: calc(var(--demo-h) + 8px); right: 12px; width: min(420px, calc(100vw - 24px)); max-height: calc(100vh - var(--demo-h) - 20px); max-height: calc(100dvh - var(--demo-h) - 20px); overflow-y: auto; overscroll-behavior: contain; background: #0D1626; color: var(--on-dark); border: 1px solid rgba(196,164,106,.35); box-shadow: 0 24px 60px rgba(0,0,0,.45); padding: 20px; animation: pop var(--fast) var(--ease) both; }
 @keyframes pop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 .presenter h2 { font: 600 1.5rem/1.1 var(--f-display); margin: 0; outline: none; }
 .presenter > p { margin: 6px 0 16px; color: var(--on-dark-muted); font-size: .88rem; }
@@ -331,15 +331,19 @@ button.sb-field:hover { background: rgba(196,164,106,.08); }
 .layer { position: fixed; inset: 0; z-index: 160; display: grid; }
 .layer-backdrop { position: absolute; inset: 0; background: rgba(6, 10, 20, .66); animation: fade var(--fast) both; }
 @keyframes fade { from { opacity: 0; } }
-.layer-modal { place-items: center; padding: 20px var(--gutter); overflow-y: auto; }
+.layer-modal { place-items: center; padding: 20px var(--gutter); overflow-y: auto; overscroll-behavior: contain; }
 .layer-card { position: relative; background: var(--paper); color: var(--text); box-shadow: 0 30px 80px rgba(0,0,0,.4); outline: none; }
-.layer-modal .layer-card { width: min(560px, 100%); max-height: calc(100vh - 40px); overflow-y: auto; animation: pop var(--fast) var(--ease) both; }
+.layer-modal .layer-card { width: min(560px, 100%); max-height: calc(100vh - 40px); max-height: calc(100dvh - 40px); overflow-y: auto; overscroll-behavior: contain; animation: pop var(--fast) var(--ease) both; }
 .layer-modal .layer-card.wide { width: min(780px, 100%); }
-.layer-drawer { justify-items: end; }
-.layer-drawer .layer-card { width: min(460px, 100%); height: 100%; display: flex; flex-direction: column; animation: slidein .22s var(--ease) both; }
+/* The single grid row must not grow with the drawer's content, otherwise the drawer gets taller than the screen and nothing scrolls. */
+.layer-drawer { justify-items: end; grid-template-rows: minmax(0, 1fr); }
+.layer-drawer .layer-card { width: min(460px, 100%); height: 100%; min-height: 0; display: flex; flex-direction: column; animation: slidein .22s var(--ease); }
+/* no fill-mode on purpose: a lingering transform would pin the fixed close button (phones) to the card */
 @keyframes slidein { from { transform: translateX(24px); opacity: .001; } to { transform: none; opacity: 1; } }
 .x-btn { position: absolute; top: 12px; right: 12px; z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(251,249,245,.92); color: var(--text); display: inline-flex; align-items: center; justify-content: center; }
 .x-btn:hover { background: var(--stone); }
+/* Long dialogs scroll inside the card; keep the close button in reach. */
+.layer-modal .x-btn { position: sticky; top: 12px; display: flex; margin: 12px 12px -56px auto; box-shadow: 0 2px 10px rgba(15,26,46,.12); }
 .m-body { padding: clamp(24px, 4vw, 40px); }
 .m-body h3 { font: 600 clamp(1.7rem, 3.4vw, 2.3rem)/1.1 var(--f-display); margin: 0; padding-right: 40px; }
 .m-body h4 { font: 700 .74rem/1.2 var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--brass-deep); margin: 24px 0 8px; }
@@ -718,7 +722,7 @@ table.list { width: 100%; border-collapse: collapse; font-size: .92rem; }
 .drawer-head h3 { font: 600 1.9rem/1.05 var(--f-display); margin: 0; }
 .drawer-head .pills { display: flex; flex-wrap: wrap; gap: 6px; }
 .drawer-head .meta { color: var(--on-dark-muted); font-size: .9rem; }
-.drawer-body { padding: 18px 24px; overflow-y: auto; flex: 1; }
+.drawer-body { padding: 18px 24px; overflow-y: auto; overscroll-behavior: contain; flex: 1; min-height: 0; }
 .dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 18px; margin: 0; font-size: .94rem; }
 .dl dt { color: var(--muted); }
 .dl dd { margin: 0; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
@@ -827,6 +831,9 @@ table.list { width: 100%; border-collapse: collapse; font-size: .92rem; }
   .dist li { grid-template-columns: 24px minmax(0, 1fr); }
   .dist em { grid-column: 2; text-align: left; }
   .drawer-actions .row { grid-template-columns: minmax(0, 1fr); }
+  .layer-drawer .layer-card { display: block; overflow-y: auto; overscroll-behavior: contain; }
+  .layer-drawer .drawer-head .x-btn { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); right: 12px; background: var(--night); color: var(--on-dark); box-shadow: 0 4px 14px rgba(0,0,0,.3); }
+  .drawer-body { overflow: visible; }
   .bk-top .logo-text { display: none; }
   .bk-top .wrap { gap: 10px; }
   .variant { grid-template-columns: 40px minmax(0, 1fr) auto; gap: 10px; }
